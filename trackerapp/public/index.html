@@ -46,14 +46,17 @@
     <li data-match-route="/add"><a href="/add">Add</a></li>
   </ul>
   
-  <!---- User not logged in -->
   
   <ul class="nav navbar-nav pull-right" ng-if="!currentUser">
     <li data-match-route="/login"><a href="/login">Login</a></li>
     <li data-match-route="/signup"><a href="/signup">Sign up</a></li>
   </ul>
   
-  <!---- Logged in User  -->
+  <ul class="nav navbar-nav pull-right" ng-if="!currentUser">
+    <li data-match-route="/login"><a href="/login">Login</a></li>
+    <li data-match-route="/signup"><a href="/signup">Sign up</a></li>
+  </ul>
+  
   
   <ul class="nav navbar-nav pull-right" ng-if="currentUser">
     <li class="navbar-text" ng-bind="currentUser.email"></li>
