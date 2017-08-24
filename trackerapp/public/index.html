@@ -24,12 +24,15 @@
 <script src="vendor/angular-strap-tpl.js"></script>
 <script src="vendor/angular-message.js"></script>
 <script src="vendor/angular-resource.js"></script>
-
 <script src="vendor/angular-cookies.js"></script>
 <script src="vendor/moment.js"></script>
 
-
+<!---- Controllers -->
 <script src="app.js"></script>
+<script src="controllers/home.js"></script>
+
+<!---- Services -->
+<script src="services/show.js"></script>
 
 
 <div class="navbar navbar-default navbar-static-top"
@@ -45,15 +48,15 @@
   </ul>
   
   
-  <ul class="nav navbar-nav pull-right">
+  <ul class="nav navbar-nav pull-right" ng-if="!currentUser">
     <li data-match-route="/login"><a href="/login">Login</a></li>
     <li data-match-route="/signup"><a href="/signup">Sign up</a></li>
   </ul>
   
   
   
-  <ul class="nav navbar-nav pull-right">
-    <li class="navbar-text"> Name </li>
+  <ul class="nav navbar-nav pull-right" ng-if="currentUser">
+    <li class="navbar-text" ng-bind="currentUser.email"> Name </li>
     <li><a href="javascript:void(0)" ng-click="logout()">Logout</a></li>
   </ul>
 </div>

@@ -1,6 +1,19 @@
-<!DOCTYPE html>
-<html>
-    <body>
-        <p>Home Page</p>
-    </body>
-</html>
+<div class="jumbotron">
+  <div class="container">
+    <ul class="genres">
+      <li ng-repeat="genre in genres" class="label label-default">
+        <span ng-click="filterByGenre(genre)">{{genre}}</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div>
+        <input class="search" type="text" ng-model="query.name" placeholder="Search...">
+      </div>
+    </div>
+  </div>
+ </div>
