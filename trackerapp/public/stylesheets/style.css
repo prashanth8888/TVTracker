@@ -13,13 +13,20 @@
 }
 
 .navbar-nav li {
-    float: left;
+  float: left;
 }
 
 .navbar-nav li a{
-      padding: 15px;
+  padding: 15px;
 }
 
+.genres li a{
+  color: black;
+}
+
+.genres li a:hover{
+  text-decoration: none;
+}
 
 body {
   padding-bottom: 20px;
@@ -28,10 +35,6 @@ body {
 
 .btn {
   border-radius: 2px;
-}
-
-a {
-  color: #00B7FF;
 }
 
 .jumbotron {

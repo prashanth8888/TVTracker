@@ -2,7 +2,8 @@
   <div class="container">
     <ul class="genres">
       <li ng-repeat="genre in genres" class="label label-default">
-        <span ng-click="filterByGenre(genre)">{{genre}}</span>
+        <!--<span ng-click="filterByGenre(genre)">{{genre}}</span>-->
+        <a ng-click="getTvSeries(genre.id)">{{genre.name}}</a>
       </li>
     </ul>
   </div>
