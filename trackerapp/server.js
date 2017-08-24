@@ -28,15 +28,14 @@ app.get('/tv/shows', function(req, res, next) {
   async.series([
        function(callback){
          var url = 'http://api.themoviedb.org/3/discover/tv?' + 'api_key=' + TMDBKey + '&sort_by=popularity.desc&with_genres=' + req.query.genreId;
-         console.log(url);
+        // console.log(url);
          request({ url: url }, function(error, response, body) {
-            // console.log(error);
-            // console.log(response);
-            console.log(body);
             data = body;
+            callback();
          });
        }    
     ], function(){
+            // console.log("At Node" + data);
             res.send(data);
        });
 });
