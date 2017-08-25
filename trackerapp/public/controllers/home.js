@@ -38,4 +38,9 @@ app.controller('HomeCtrl',['$scope', 'getShows', function($scope, getShows) {
       });
       
     }
+    
+    var init = function () {
+        $scope.getTvSeries(10759); //Default load
+    };
+    init();
   }]);

@@ -1,13 +1,7 @@
-// angular.module('MyApp')
-//   .factory('Show', ['$resource', function($resource) {
-//     return $resource('/tv/shows/:_id');
-//   }]);
-  
-// angular.module('MyApp')
-//   .factory('Show', ['$http', function($http) {
-//     return {
-//       subscribe: function(show, user) {
-//         return $http.get('/api/subscribe', { showId: show._id });
-//       }
-//     };
-//   }]);
+var app = angular.module('MyApp');
+
+app.service('Detail', ['$http', function($http) {
+    this.displaybyShowId = function(showId){
+        return $http.get('/tv/show/', {params: { showID: showId }});
+    }
+}]);

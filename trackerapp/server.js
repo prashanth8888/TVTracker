@@ -19,25 +19,43 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Enables Angular Rerouting
+//Routes
+
+//Get TV shows by Genre
 
 
 app.get('/tv/shows', function(req, res, next) {
   var data;
-  // console.log("Here" + JSON.stringify(req.params.data) + JSON.stringify(req.body) + JSON.stringify(req.query.genreId));
   async.series([
        function(callback){
          var url = 'http://api.themoviedb.org/3/discover/tv?' + 'api_key=' + TMDBKey + '&sort_by=popularity.desc&with_genres=' + req.query.genreId;
-        // console.log(url);
          request({ url: url }, function(error, response, body) {
             data = body;
             callback();
          });
        }    
     ], function(){
-            // console.log("At Node" + data);
             res.send(data);
        });
+});
+
+
+//Get TV show by ShowID
+
+app.get('/tv/show', function(req, res, next){
+  var seasonsData;
+  console.log("Request details" + req.query.showID);
+  var url = "https://api.themoviedb.org/3/tv/"+ req.query.showID +"?api_key=" + TMDBKey + "&language=en-US";
+  async.series([
+        function(callback){
+            request({ url: url }, function(error, response, body) {
+            seasonsData = body;
+            console.log(seasonsData);
+            callback();
+         })         
+        }
+    ],function() {
+    });
 });
 
 app.get('*', function(req, res) {
