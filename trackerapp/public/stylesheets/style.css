@@ -93,4 +93,14 @@ body {
     opacity: 0.5;
 }
 
+.season-image{
+  max-width: 200px;
+  margin-bottom: 10px;
+}
+
+.episodes{
+  border-left: 5px solid #111;
+  padding-left: 10px;
+}
+
 
