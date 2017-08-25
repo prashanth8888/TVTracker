@@ -24,12 +24,15 @@ app.controller('HomeCtrl',['$scope', 'getShows', function($scope, getShows) {
                 image: String,
                 overview: String
             }
-            seriesInfo.id       = series.id;
-            seriesInfo.name     = series.name;
-            seriesInfo.image    = series.poster_path;
-            seriesInfo.overview = series.overview;
-            $scope.TvSeries.push(seriesInfo);
+            if(series.poster_path != null || series.poster_path != undefined){
+                seriesInfo.id       = series.id;
+                seriesInfo.name     = series.name;
+                seriesInfo.image    = series.poster_path;
+                seriesInfo.overview = series.overview;
+                $scope.TvSeries.push(seriesInfo); 
+            }
             });
+            // console.log(JSON.stringify($scope.TvSeries));
       }, function(){
         console.log("Error");
       });

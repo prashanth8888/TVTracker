@@ -20,8 +20,19 @@
  </div>
  
  
- <div class="container">
-      <div ng-repeat="series in TvSeries">
-        <li>{{series.name}}</li>
+ <div class="panel-body">
+   <div class="row serieslist">
+     <div ng-repeat="series in TvSeries">
+      <div class="col-xs-4 col-md-3">
+        <div class="thumbnail">
+          <a href="/shows/{{series.id}}">
+           <img class="img-rounded " src="http://image.tmdb.org/t/p/w185/{{series.image}}" style="height:250px;">
+          </a>  
+        </div>
+        <div class="text-center">
+          <a href="/shows/{{series.id}}">{{series.name}}</a>
+        </div>
+     </div>
+     </div>
   </div>
 </div>
