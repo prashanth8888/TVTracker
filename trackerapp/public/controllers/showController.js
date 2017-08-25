@@ -4,7 +4,8 @@ app.controller('ShowCtrl',['$scope','$routeParams','Detail', function($scope, $r
 
     $scope.getShow = function(showId){
         Detail.displaybyShowId(showId).then(function(response){
-            console.log(response);
+            console.log("Sesons Data " + response.data.seasonsData);
+            console.log("Episodes Data " + response.data.episodesData);
         }, function(){
             console.log("Error while trying to build Show details page");
         });

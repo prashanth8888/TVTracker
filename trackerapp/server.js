@@ -44,7 +44,7 @@ app.get('/tv/shows', function(req, res, next) {
 
 app.get('/tv/show', function(req, res, next){
   var seasonsData;
-  var EpisodeDetails = [];
+  var episodesData = [];
   var episodeDataForRetrieval;
   var url = "https://api.themoviedb.org/3/tv/"+ req.query.showID +"?api_key=" + TMDBKey + "&language=en-US";
   async.waterfall([
@@ -52,24 +52,29 @@ app.get('/tv/show', function(req, res, next){
         function(callback){
             request({ url: url }, function(error, response, body) {
             seasonsData = body;
-            var data = body;
-            console.log(body["number_of_seasons"]);
-            console.log(data.seasons);
+            var jsonBody = JSON.parse(body);
+            episodeDataForRetrieval = jsonBody["number_of_seasons"];
             callback(null, episodeDataForRetrieval);
          })         
         },
         
         function(episodeDataForRetrieval, callback){
-           var episodesData = [];
-           console.log("Generated URLs" + episodeDataForRetrieval);
+          var generatedUrls = [];
            for(var i = 0; i < episodeDataForRetrieval; i++){
              var url = "https://api.themoviedb.org/3/tv/"+ req.query.showID +"/season/"+i+"?api_key=" + TMDBKey + "&language=en-US";
-             console.log(url); 
-           }
-           callback();
+             generatedUrls.push(url);
+           }  
+          async.eachSeries(generatedUrls, function(url, callback){
+              request({ url: url }, function(error, response, body) {
+                    episodesData.push(body);
+                    callback();
+              });
+          }, function(){
+              callback(); //Outer callback
+          });
         }
     ],function() {
-        res.send(seasonsData);
+        res.send({seasonsData: seasonsData, episodesData: episodesData});
     });
 });
 
