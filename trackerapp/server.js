@@ -44,17 +44,32 @@ app.get('/tv/shows', function(req, res, next) {
 
 app.get('/tv/show', function(req, res, next){
   var seasonsData;
-  console.log("Request details" + req.query.showID);
+  var EpisodeDetails = [];
+  var episodeDataForRetrieval;
   var url = "https://api.themoviedb.org/3/tv/"+ req.query.showID +"?api_key=" + TMDBKey + "&language=en-US";
-  async.series([
+  async.waterfall([
+    
         function(callback){
             request({ url: url }, function(error, response, body) {
             seasonsData = body;
-            console.log(seasonsData);
-            callback();
+            var data = body;
+            console.log(body["number_of_seasons"]);
+            console.log(data.seasons);
+            callback(null, episodeDataForRetrieval);
          })         
+        },
+        
+        function(episodeDataForRetrieval, callback){
+           var episodesData = [];
+           console.log("Generated URLs" + episodeDataForRetrieval);
+           for(var i = 0; i < episodeDataForRetrieval; i++){
+             var url = "https://api.themoviedb.org/3/tv/"+ req.query.showID +"/season/"+i+"?api_key=" + TMDBKey + "&language=en-US";
+             console.log(url); 
+           }
+           callback();
         }
     ],function() {
+        res.send(seasonsData);
     });
 });
 
