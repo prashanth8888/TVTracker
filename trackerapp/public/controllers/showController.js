@@ -6,7 +6,7 @@ app.controller('ShowCtrl',['$scope','$routeParams','Detail', function($scope, $r
     $scope.currentSeason = null;
     $scope.episodesData = [];
     $scope.currentSeasonEpisodesData = {};
-    
+    $scope.dataHasLoaded = false;
     
     $scope.getShow = function(showId){
         Detail.displaybyShowId(showId).then(function(response){
@@ -17,9 +17,10 @@ app.controller('ShowCtrl',['$scope','$routeParams','Detail', function($scope, $r
                    $scope.currentSeason = i;
                 $scope.episodesData.push(response.data.episodesData[i]);
             }
-            $scope.currentSeasonEpisodesData = $scope.episodesData[$scope.currentSeason];
-            $scope.seasonsData = response.data.seasonsData;
+            $scope.currentSeasonEpisodesData = JSON.parse($scope.episodesData[$scope.currentSeason]);
+            $scope.seasonsData = JSON.parse(response.data.seasonsData);
             console.log($scope.seasonsData);
+            $scope.dataHasLoaded = true;
         }, function(){
             console.log("Error while trying to build Show details page");
         });
