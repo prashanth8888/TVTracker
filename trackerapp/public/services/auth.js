@@ -1,8 +1,8 @@
 angular.module('MyApp')
   .factory('Auth', ['$http', '$location', '$rootScope', '$cookieStore', '$alert',
-    function($http, $location, $rootScope, $cookieStore, $alert) {
-      $rootScope.currentUser = $cookieStore.get('user');
-      $cookieStore.remove('user');
+    function($http, $location, $rootScope, $cookies, $alert) {
+      $rootScope.currentUser = $cookies.get('user');
+      $cookies.remove('user');
 
       return {
           
@@ -57,7 +57,7 @@ angular.module('MyApp')
         logout: function() {
           return $http.get('/tvApp/logout').success(function() {
             $rootScope.currentUser = null;
-            $cookieStore.remove('user');
+            $cookies.remove('user');
             $alert({
               content: 'You have been logged out.',
               placement: 'top-right',

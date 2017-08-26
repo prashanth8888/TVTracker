@@ -31,14 +31,19 @@
 <script src="app.js"></script>
 <script src="controllers/home.js"></script>
 <script src="controllers/showController.js"></script>
+<script src="controllers/login.js"></script>
+<script src="controllers/signup.js"></script>
+<script src="controllers/navbar.js"></script>
 
 <!---- Services -->
 <script src="services/show.js"></script>
 <script src="services/getShows.js"></script>
+<script src="services/auth.js"></script>
+<script src="services/subscription.js"></script>
 
 
 <div class="navbar navbar-default navbar-static-top"
-     role="navigation" id="main-navbar" bs-navbar>
+     ng-controller="NavBarCtrl" role="navigation" id="main-navbar" bs-navbar>
   <div class="navbar-header">
     <a class="navbar-brand" href="/">
       <span class="glyphicon glyphicon-film"></span>
