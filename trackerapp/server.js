@@ -1,11 +1,15 @@
-var express      = require('express');
-var path         = require('path');
-var async        = require('async');
-var request      = require('request');
-var logger       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var app          = express();
+var express       = require('express');
+var path          = require('path');
+var async         = require('async');
+var request       = require('request');
+var logger        = require('morgan');
+var cookieParser  = require('cookie-parser');
+var bodyParser    = require('body-parser');
+var app           = express();
+var mongoose      = require("mongoose");
+var session       = require('express-session');
+var passport      = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var Series         = require("./public/models/series");
 var User           = require("./public/models/user");
@@ -17,7 +21,52 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+app.use(session({ secret: 'With great power comes great responsibility' }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+//Mongo Connection
+mongoose.connect("mongodb://localhost/tvappdb1");
+
+app.use(function(req, res, next) {
+  if (req.user) {
+    res.cookie('user', JSON.stringify(req.user));
+  }
+  next();
+});
+
+
+//Passport Authentication methods
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, password, done) {
+  console.log("Authenticating");
+  User.findOne({ email: email }, function(err, user) {
+    if (err) return done(err);
+    if (!user) return done(null, false);
+    user.comparePassword(password, function(err, isMatch) {
+      if (err) return done(err);
+      if (isMatch) return done(null, user);
+      return done(null, false);
+    });
+  });
+}));
+
+//Custom Functions
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) next();
+  else res.send(401);
+}
 
 //Routes
 
@@ -76,6 +125,32 @@ app.get('/tv/show', function(req, res, next){
     ],function() {
         res.send({seasonsData: seasonsData, episodesData: episodesData});
     });
+});
+
+//Login and Signup Routes
+
+app.post('/tvApp/login', passport.authenticate('local'), function(req, res) {
+  res.cookie('user', req.user);
+  res.send(req.user);
+});
+
+app.post('/tvApp/signup', function(req, res, next) {
+  var user = new User({
+    email: req.body.email,
+    password: req.body.password
+  });
+  user.save(function(err) {
+    if (err) {
+        console.log("Error in saving data");
+        return next(err);
+    }
+    res.send(200);
+  });
+});
+
+app.get('/tvApp/logout', function(req, res, next) {
+  req.logout();
+  res.send(200);
 });
 
 app.get('*', function(req, res) {

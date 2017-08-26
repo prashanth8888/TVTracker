@@ -8,10 +8,10 @@ angular.module('MyApp')
           
         login: function(user) {
           return $http.post('/tvApp/login', user)
-            .success(function(data) {
+            .then(function(data) {
+              console.log("Data returned from Login" + JSON.stringify(data));
               $rootScope.currentUser = data;
               $location.path('/');
-
               $alert({
                 title: 'Cheers!',
                 content: 'You have successfully logged in.',
@@ -20,7 +20,7 @@ angular.module('MyApp')
                 duration: 3
               });
             })
-            .error(function() {
+            .catch(function() {
               $alert({
                 title: 'Error!',
                 content: 'Invalid username or password.',
@@ -32,9 +32,8 @@ angular.module('MyApp')
         },
         signup: function(user) {
           return $http.post('/tvApp/signup', user)
-            .success(function() {
+            .then(function() {
               $location.path('/login');
-
               $alert({
                 title: 'Congratulations!',
                 content: 'Your account has been created.',
@@ -43,7 +42,7 @@ angular.module('MyApp')
                 duration: 3
               });
             })
-            .error(function(response) {
+            .catch(function(response) {
               $alert({
                 title: 'Error!',
                 content: response.data,
@@ -55,15 +54,16 @@ angular.module('MyApp')
         },
         
         logout: function() {
-          return $http.get('/tvApp/logout').success(function() {
-            $rootScope.currentUser = null;
-            $cookies.remove('user');
-            $alert({
-              content: 'You have been logged out.',
-              placement: 'top-right',
-              type: 'info',
-              duration: 3
-            });
+          return $http.get('/tvApp/logout')
+            .then(function() {
+              $rootScope.currentUser = null;
+              $cookies.remove('user');
+              $alert({
+                content: 'You have been logged out.',
+                placement: 'top-right',
+                type: 'info',
+                duration: 3
+              });
           });
         }
       };
