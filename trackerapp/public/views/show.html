@@ -42,9 +42,39 @@
           
           <p>{{seasonsData.overview}}</p>
         </div>
-        
       </div>
     </div>
   </div>
+  
+  <div class="panel panel-default">
+      <div class="panel-body">
+        <ul class="seasons">
+          <li ng-click="getSeason(season.season_number)" ng-repeat="season in seasonsData.seasons" class="label">
+            {{season.season_number + 1}}
+          </li>
+        </ul>
+      </div>
+  </div>
+  
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span class="glyphicon glyphicon-play"></span> Episodes
+    </div>
+    <div class="panel-body">
+      <div class="episode" ng-repeat="episode in currentSeasonEpisodesData.episodes">
+        <h4>{{episode.name}}
+        currentSeason
+        <small>Season {{currentSeason + 1}}, Episode {{episode.episode_number}}</small>
+        </h4>
+        <p>
+          <span class="glyphicon glyphicon-calendar"></span>
+          {{episode.air_date | date: 'short'}}
+        </p>
+        <p>{{episode.overview}}</p>
+      </div>
+    </div>
+  </div>
+  
+  
   
 </div>

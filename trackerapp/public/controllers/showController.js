@@ -19,11 +19,17 @@ app.controller('ShowCtrl',['$scope','$routeParams','Detail', function($scope, $r
             }
             $scope.currentSeasonEpisodesData = JSON.parse($scope.episodesData[$scope.currentSeason]);
             $scope.seasonsData = JSON.parse(response.data.seasonsData);
-            console.log($scope.seasonsData);
+            // console.log($scope.currentSeasonEpisodesData.episodes);
             $scope.dataHasLoaded = true;
         }, function(){
             console.log("Error while trying to build Show details page");
         });
+    }
+    
+    $scope.getSeason = function(seasonID){
+        $scope.currentSeason = seasonID;
+        $scope.currentSeasonEpisodesData = JSON.parse($scope.episodesData[$scope.currentSeason]);
+        console.log($scope.currentSeasonEpisodesData);
     }
     
     var init = function () {
