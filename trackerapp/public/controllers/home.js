@@ -32,7 +32,6 @@ app.controller('HomeCtrl',['$scope', 'getShows', function($scope, getShows) {
                 $scope.TvSeries.push(seriesInfo); 
             }
             });
-            // console.log(JSON.stringify($scope.TvSeries));
       }, function(){
         console.log("Error");
       });

@@ -28,9 +28,28 @@
   text-decoration: none;
 }
 
+
 body {
   padding-bottom: 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+   background: #3C3B3F;  /* fallback for old browsers */
+   background: -webkit-linear-gradient(to right, #605C3C, #3C3B3F);  /* Chrome 10-25, Safari 5.1-6 */
+   background: linear-gradient(to right, #605C3C, #3C3B3F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+a.series-name{
+    background-color: #000;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+a.series-name:hover{
+  background-color: gray;
+  text-decoration: none;
 }
 
 .btn {
