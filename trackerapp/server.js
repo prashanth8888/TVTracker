@@ -77,7 +77,8 @@ app.get('/tv/shows', function(req, res, next) {
   var data;
   async.series([
        function(callback){
-         var url = 'http://api.themoviedb.org/3/discover/tv?' + 'api_key=' + TMDBKey + '&sort_by=popularity.desc&with_genres=' + req.query.genreId;
+         var url = 'http://api.themoviedb.org/3/discover/tv?' + 'api_key=' 
+         + TMDBKey + '&sort_by=popularity.desc&with_genres=' + req.query.genreId;
          request({ url: url }, function(error, response, body) {
             data = body;
             callback();
@@ -95,6 +96,8 @@ app.get('/tv/show', function(req, res, next){
   var seasonsData;
   var episodesData = [];
   var episodeDataForRetrieval;
+  var currentSeasonDBdata;
+  
   var url = "https://api.themoviedb.org/3/tv/"+ req.query.showID +"?api_key=" + TMDBKey + "&language=en-US";
   async.waterfall([
     
@@ -102,6 +105,36 @@ app.get('/tv/show', function(req, res, next){
             request({ url: url }, function(error, response, body) {
             seasonsData = body;
             var jsonBody = JSON.parse(body);
+            Series.findOne({"seriesParm._id" : Number(jsonBody["id"])}, function(err, data){
+            //   console.log("Data" + data);
+               if(err)
+                  console.log(err);
+                  
+               else if(!data){
+                  //Handling Series for a first time
+                  var seriesInfo = {
+                      _id: Number(jsonBody["id"]),
+                      name: jsonBody["name"],
+                      overview: jsonBody["overview"],
+                      subscribers : []
+                  } 
+                  Series.create({seriesParm : seriesInfo}, function(err, newSeries){
+                      if(err)
+                        console.log(err);
+                      else{
+                          newSeries.save();
+                          currentSeasonDBdata = newSeries;
+                        //   console.log("here 1");
+                      }
+                  });
+               } 
+               
+               else{
+                  //Movie data already present in DB
+                //   console.log("here 2");
+                  currentSeasonDBdata = data;
+               }
+            });
             episodeDataForRetrieval = jsonBody["number_of_seasons"];
             callback(null, episodeDataForRetrieval);
          })         
@@ -123,7 +156,9 @@ app.get('/tv/show', function(req, res, next){
           });
         }
     ],function() {
-        res.send({seasonsData: seasonsData, episodesData: episodesData});
+        console.log(currentSeasonDBdata);
+        res.send({seasonsData: seasonsData, episodesData: episodesData, 
+                  currentSeasonDBdata: currentSeasonDBdata.seriesParm});
     });
 });
 
@@ -151,6 +186,15 @@ app.post('/tvApp/signup', function(req, res, next) {
 app.get('/tvApp/logout', function(req, res, next) {
   req.logout();
   res.send(200);
+});
+
+app.post('/tv/subscribe', ensureAuthenticated, function(req, res, next) {
+    // console.log(JSON.stringify(req.body.params.show));
+    
+});
+
+app.post('/tv/subscribe', ensureAuthenticated, function(req, res, next) {
+    // console.log(req);
 });
 
 app.get('*', function(req, res) {
