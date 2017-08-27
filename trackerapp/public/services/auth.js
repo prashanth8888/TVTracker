@@ -9,7 +9,6 @@ angular.module('MyApp')
         login: function(user) {
           return $http.post('/tvApp/login', user)
             .then(function(data) {
-              console.log("Data returned from Login" + JSON.stringify(data));
               $rootScope.currentUser = data;
               $location.path('/');
               $alert({

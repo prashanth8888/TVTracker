@@ -1,9 +1,14 @@
+<div id="wait-animation" ng-if="!dataHasLoaded">
+  <div class="circle"></div>
+  <div class="circle1"></div>
+</div>
+
 <div class="container detail-page" ng-if="dataHasLoaded">
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="media">
         <div class="pull-left">
-          <img class="season-image img-rounded"  src="https://image.tmdb.org/t/p/w500/{{seasonsData.backdrop_path}}" style="height:250px;">
+          <img class="season-image img-rounded"  ng-src="https://image.tmdb.org/t/p/w500/{{seasonsData.backdrop_path}}" style="height:250px;">
           
           <div class="text-center" ng-if="currentUser">
             <div ng-show="!isSubscribed()">

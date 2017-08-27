@@ -50,7 +50,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, password, done) {
-  console.log("Authenticating");
+//   console.log("Authenticating");
   User.findOne({ email: email }, function(err, user) {
     if (err) return done(err);
     if (!user) return done(null, false);
@@ -106,12 +106,9 @@ app.get('/tv/show', function(req, res, next){
             seasonsData = body;
             var jsonBody = JSON.parse(body);
             Series.findOne({"seriesParm._id" : Number(jsonBody["id"])}, function(err, data){
-            //   console.log("Data" + data);
                if(err)
                   console.log(err);
-                  
                else if(!data){
-                  //Handling Series for a first time
                   var seriesInfo = {
                       _id: Number(jsonBody["id"]),
                       name: jsonBody["name"],
@@ -124,20 +121,16 @@ app.get('/tv/show', function(req, res, next){
                       else{
                           newSeries.save();
                           currentSeasonDBdata = newSeries;
-                        //   console.log("here 1");
                       }
                   });
-               } 
-               
+               }
                else{
-                  //Movie data already present in DB
-                //   console.log("here 2");
                   currentSeasonDBdata = data;
                }
             });
             episodeDataForRetrieval = jsonBody["number_of_seasons"];
             callback(null, episodeDataForRetrieval);
-         })         
+         });         
         },
         
         function(episodeDataForRetrieval, callback){
@@ -156,7 +149,6 @@ app.get('/tv/show', function(req, res, next){
           });
         }
     ],function() {
-        console.log(currentSeasonDBdata);
         res.send({seasonsData: seasonsData, episodesData: episodesData, 
                   currentSeasonDBdata: currentSeasonDBdata.seriesParm});
     });
@@ -188,13 +180,31 @@ app.get('/tvApp/logout', function(req, res, next) {
   res.send(200);
 });
 
-app.post('/tv/subscribe', ensureAuthenticated, function(req, res, next) {
-    // console.log(JSON.stringify(req.body.params.show));
-    
-});
+//SubScribe and Unsubscribe Routes
 
 app.post('/tv/subscribe', ensureAuthenticated, function(req, res, next) {
-    // console.log(req);
+    var showID = Number(JSON.stringify(req.body.params.showID));
+    Series.findOne({"seriesParm._id" : showID}, function(err, series) {
+    if (err) return next(err);
+    series.seriesParm.subscribers.push(req.user.id);
+    series.save(function(err) {
+      if (err) return next(err);
+      res.send(200);
+    });
+  });
+});
+
+app.post('/tv/unsubscribe', ensureAuthenticated, function(req, res, next) {
+    var showID = Number(JSON.stringify(req.body.params.showID));
+    Series.findOne({"seriesParm._id" : showID}, function(err, series) {
+    if (err) return next(err);
+    var index = series.seriesParm.subscribers.indexOf(req.user.id);
+    series.seriesParm.subscribers.splice(index, 1);
+    series.save(function(err) {
+      if (err) return next(err);
+      res.send(200);
+    });
+  });
 });
 
 app.get('*', function(req, res) {

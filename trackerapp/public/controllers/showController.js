@@ -25,21 +25,22 @@ function($scope,$rootScope, $routeParams, Detail, Subscription) {
             $scope.seasonsData = JSON.parse(response.data.seasonsData);
             $scope.currentSeasonDBdata = response.data.currentSeasonDBdata;
             
-            console.log($scope.currentSeasonDBdata);
+            // console.log($scope.currentSeasonDBdata);
             
             $scope.isSubscribed = function() {
-                return $scope.currentSeasonDBdata.subscribers.indexOf($rootScope.currentUser._id) !== -1;
+                // console.log("Current User ID " + $rootScope.currentUser.data._id);
+                return $scope.currentSeasonDBdata.subscribers.indexOf($rootScope.currentUser.data._id) !== -1;
             };
 
             $scope.subscribe = function() {
-              Subscription.subscribe($scope.seasonsData).then(function() {
-                $scope.currentSeasonDBdata.subscribers.push($rootScope.currentUser._id);
+              Subscription.subscribe($scope.seasonsData.id).then(function() {
+                $scope.currentSeasonDBdata.subscribers.push($rootScope.currentUser.data._id);
               });
             };
 
             $scope.unsubscribe = function() {
               Subscription.unsubscribe($scope.seasonsData.id).then(function() {
-                var index = $scope.currentSeasonDBdata.subscribers.indexOf($rootScope.currentUser._id);
+                var index = $scope.currentSeasonDBdata.subscribers.indexOf($rootScope.currentUser.data._id);
                 $scope.currentSeasonDBdata.subscribers.splice(index, 1);
               });
             };

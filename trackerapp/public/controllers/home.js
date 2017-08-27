@@ -3,6 +3,7 @@ var app = angular.module('MyApp');
 app.controller('HomeCtrl',['$scope', 'getShows', function($scope, getShows) {
     
     $scope.TvSeries = [];
+    $scope.dataHasLoaded = false;
     
     $scope.genres = [{"id":10759,"name":"Action & Adventure"},{"id":16,"name":"Animation"},
                     {"id":35,"name":"Comedy"},{"id":80,"name":"Crime"},
@@ -32,6 +33,7 @@ app.controller('HomeCtrl',['$scope', 'getShows', function($scope, getShows) {
                 $scope.TvSeries.push(seriesInfo); 
             }
             });
+            $scope.dataHasLoaded = true;
       }, function(){
         console.log("Error");
       });
