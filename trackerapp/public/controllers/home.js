@@ -1,6 +1,6 @@
 var app = angular.module('MyApp');
 
-app.controller('HomeCtrl',['$scope', 'getShows', function($scope, getShows) {
+app.controller('HomeCtrl',['$scope', 'Series', function($scope, Series) {
     
     $scope.TvSeries = [];
     $scope.dataHasLoaded = false;
@@ -13,9 +13,10 @@ app.controller('HomeCtrl',['$scope', 'getShows', function($scope, getShows) {
                     {"id":10764,"name":"Reality"},{"id":10765,"name":"Sci-Fi & Fantasy"},
                     {"id":10766,"name":"Soap"},{"id":10767,"name":"Talk"},
                     {"id":10768,"name":"War & Politics"},{"id":37,"name":"Western"}];
+      
                     
     $scope.getTvSeries = function(genre_id){
-      getShows.displaybyGenre(genre_id).then(function(response){
+      Series.displaybyGenre(genre_id).then(function(response){
         var seriesResults = response.data.results;
         $scope.TvSeries.length = 0;
         seriesResults.forEach(function(series){

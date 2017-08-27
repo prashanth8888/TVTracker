@@ -13,22 +13,23 @@ function($scope,$rootScope, $routeParams, Detail, Subscription) {
     //Get the show details from the API - Uses Detail service
     $scope.getShow = function(showId){
         Detail.displaybyShowId(showId).then(function(response){
+            
             $scope.seasonsData = {};
             $scope.currentSeasonDBdata = {};
             $scope.episodesData.length = 0;
+            
             for(var i = 0; i < response.data.episodesData.length; i++){
                 if(i == 0)
                    $scope.currentSeason = i;
                 $scope.episodesData.push(response.data.episodesData[i]);
             }
-            $scope.currentSeasonEpisodesData = JSON.parse($scope.episodesData[$scope.currentSeason]);
-            $scope.seasonsData = JSON.parse(response.data.seasonsData);
-            $scope.currentSeasonDBdata = response.data.currentSeasonDBdata;
             
-            // console.log($scope.currentSeasonDBdata);
+            $scope.currentSeasonEpisodesData = JSON.parse($scope.episodesData[$scope.currentSeason]);
+            $scope.seasonsData               = JSON.parse(response.data.seasonsData);
+            $scope.currentSeasonDBdata       = response.data.currentSeasonDBdata;
+            
             
             $scope.isSubscribed = function() {
-                // console.log("Current User ID " + $rootScope.currentUser.data._id);
                 return $scope.currentSeasonDBdata.subscribers.indexOf($rootScope.currentUser.data._id) !== -1;
             };
 
@@ -56,11 +57,12 @@ function($scope,$rootScope, $routeParams, Detail, Subscription) {
     $scope.getSeason = function(seasonID){
         $scope.currentSeason = seasonID;
         $scope.currentSeasonEpisodesData = JSON.parse($scope.episodesData[$scope.currentSeason]);
-        // console.log($scope.currentSeasonEpisodesData);
     }
     
     var init = function () {
        $scope.getShow($routeParams.id);
     };
+    
     init();
+    
   }]);

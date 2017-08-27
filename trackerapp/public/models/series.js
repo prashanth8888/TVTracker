@@ -5,6 +5,7 @@ var series = new mongoose.Schema({
                  _id: Number,
                  name: String,
                  overview: String,
+                 airdate: Date,
                  subscribers: [{
                         type: mongoose.Schema.Types.ObjectId, ref: 'User'
                  }]

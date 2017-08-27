@@ -10,6 +10,9 @@ var mongoose      = require("mongoose");
 var session       = require('express-session');
 var passport      = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var schedule      = require('node-schedule'); 
+var nodemailer    = require('node-mailer');
+
 
 var Series         = require("./public/models/series");
 var User           = require("./public/models/user");
@@ -109,12 +112,14 @@ app.get('/tv/show', function(req, res, next){
                if(err)
                   console.log(err);
                else if(!data){
+                  var latestSeasonPointer = jsonBody["seasons"].length - 1;
                   var seriesInfo = {
-                      _id: Number(jsonBody["id"]),
-                      name: jsonBody["name"],
-                      overview: jsonBody["overview"],
+                      _id:          Number(jsonBody["id"]),
+                      name:         jsonBody["name"],
+                      overview:     jsonBody["overview"],
+                      airdate:      jsonBody.seasons[latestSeasonPointer].air_date,
                       subscribers : []
-                  } 
+                  };
                   Series.create({seriesParm : seriesInfo}, function(err, newSeries){
                       if(err)
                         console.log(err);
@@ -125,6 +130,39 @@ app.get('/tv/show', function(req, res, next){
                   });
                }
                else{
+                    Series.find({"seriesParm.airdate": { $gt : new Date("Jan 01, 2017") }}).populate('seriesParm.subscribers').exec(function(err, show){
+                        if(err)
+                          console.log(err);
+                        else{
+                          var elgibleShowDetails = show;
+                          for(var i = 0; i < elgibleShowDetails.length; i++){
+                              var emails = elgibleShowDetails[i].seriesParm.subscribers.map(function(user) {
+                                    return user.email;
+                              });
+                              console.log(emails);
+                              
+                              var smtpTransport = nodemailer.createTransport('SMTP', {
+                                    service: 'SendGrid',
+                                    auth: { user: 'hslogin', pass: 'hspassword00' }
+                              });
+                              
+                              var mailOptions = {
+                                from: 'TVShowTracker ✔ <tvtracker@blurdybloop.com>',
+                                to: emails.join(','),
+                                subject: elgibleShowDetails[i].seriesParm.name + ' is resuming this year!',
+                                text: "The series " + elgibleShowDetails[i].seriesParm.name + "is back and mark the date to catch up! - Happy TV watching!"
+                              };
+                              
+                              smtpTransport.sendMail(mailOptions, function(error, response) {
+                                  console.log('Message sent: ' + response.message);
+                                  smtpTransport.close();
+                              });
+
+                          }
+                          
+                        }
+                          
+                    });
                   currentSeasonDBdata = data;
                }
             });
@@ -204,6 +242,17 @@ app.post('/tv/unsubscribe', ensureAuthenticated, function(req, res, next) {
       if (err) return next(err);
       res.send(200);
     });
+  });
+});
+
+var j = schedule.scheduleJob({hour: 00, minute: 00}, function(){
+      Series.find({"seriesParm.airdate": { $gt : new Date("Jan 01, 2017") }}).populate('seriesParm.subscribers').exec(function(err, show){
+      if(err)
+        console.log(err);
+      else{
+        console.log(JSON.stringify(show));
+      }
+        
   });
 });
 

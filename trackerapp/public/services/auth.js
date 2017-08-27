@@ -29,6 +29,7 @@ angular.module('MyApp')
               });
             });
         },
+        
         signup: function(user) {
           return $http.post('/tvApp/signup', user)
             .then(function() {
