@@ -1,12 +1,10 @@
-// // // describe('MyApp', function() {
-
-// // // var app = angular.module('MyApp');
-// // // // console.log(JSON.stringify(app));
-
 describe('HomeCtrl', function(){
   var $controller;
-  var scope;
+  var $scope, result;
   var Series, $q, $httpBackend, homeController;
+  var spy;
+  
+  var API = 'http://tv/shows/';
   
   beforeEach(module('MyApp'));
 
@@ -25,17 +23,22 @@ describe('HomeCtrl', function(){
       $provide.value('Series', Series);
     });
 
+  
 
   
   beforeEach(function(){
-    inject(function($rootScope, _$controller_, _$q_, _$httpBackend_) {
-      scope         = $rootScope.$new();
+    inject(function(_$controller_, _$q_, _$httpBackend_) {
+      $scope         = {};
       $controller   = _$controller_;
       $q            = _$q_;
       $httpBackend  = _$httpBackend_;
-      homeController = $controller('HomeCtrl', {$scope: scope});
+      result = {};
+      homeController = $controller('HomeCtrl', {$scope: $scope});
+      
     });
   });
+  
+
     
     
   it('Testing Home Control Functionality', function() {
@@ -44,10 +47,11 @@ describe('HomeCtrl', function(){
   });
   
   it("Tracking that the series - service was invoked", function() {
-        var spy =  spyOn(Series, 'displaybyGenre').and.callThrough();
-        expect(Series).toBeDefined();
-        expect(spy);
-        expect(homeController.$scope).toBeUndefined();
+        $httpBackend.whenGET(API + "?genreId=10759").respond(200, 1);
+        spyOn(Series, 'displaybyGenre').and.callThrough();
+        spy = Series.displaybyGenre(10759);
+        expect(Series.displaybyGenre).toHaveBeenCalled();
+        expect($scope).toBeDefined();
   });
 });
   
