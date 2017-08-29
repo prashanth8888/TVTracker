@@ -1,4 +1,5 @@
-var app = angular.module('MyApp', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute', 'mgcrea.ngStrap']);
+
+var app = angular.module('MyApp', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','ngSanitize','ngToast','ngAnimate']);
 
 app.config(['$locationProvider','$routeProvider', function($locationProvider, $routeProvider) {
      

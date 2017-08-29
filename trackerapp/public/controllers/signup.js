@@ -1,3 +1,4 @@
+(function () {
 angular.module('MyApp')
   .controller('SignupCtrl', ['$scope', 'Auth', function($scope, Auth) {
     $scope.signup = function() {
@@ -7,3 +8,4 @@ angular.module('MyApp')
       });
     };
   }]);
+})();

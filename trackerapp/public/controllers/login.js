@@ -1,3 +1,4 @@
+(function () {
 angular.module('MyApp')
   .controller('LoginCtrl', ['$scope', 'Auth', function($scope, Auth) {
     $scope.login = function() {
@@ -7,3 +8,4 @@ angular.module('MyApp')
       });
     };
   }]);
+})();

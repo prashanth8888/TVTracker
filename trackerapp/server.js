@@ -12,18 +12,18 @@ var passport      = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var schedule      = require('node-schedule'); 
 var nodemailer    = require('nodemailer');
-var csso          = require('gulp-csso');
-var uglify        = require('gulp-uglify');
-var concat        = require('gulp-concat');
-var templateCache = require('gulp-angular-templatecache');
+var compress      = require('compression')
+
 
 
 var Series         = require("./public/models/series");
 var User           = require("./public/models/user");
 
 var TMDBKey        = "6bf903d885f2348c1ed94952f526a12d";
+var oneDay         = 86400000; //In milliseconds
 
 app.set('port', process.env.PORT || 3000);
+app.use(compress());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use(session({ secret: 'With great power comes great responsibility' }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {maxAge: oneDay}));
 
 
 //Mongo Connection
@@ -78,8 +78,6 @@ function ensureAuthenticated(req, res, next) {
 //Routes
 
 //Get TV shows by Genre
-
-
 app.get('/tv/shows', function(req, res, next) {
   var data;
   async.series([
@@ -216,6 +214,7 @@ app.post('/tv/unsubscribe', ensureAuthenticated, function(req, res, next) {
   });
 });
 
+
 schedule.scheduleJob({hour: 00, minute: 00}, function(){
     Series.find({"seriesParm.airdate": { $gt : new Date("Jan 01, 2017") }}).populate('seriesParm.subscribers').exec(function(err, show){
         if(err)
@@ -258,6 +257,7 @@ app.get('*', function(req, res) {
   console.log(req.originalUrl);
   res.redirect("/#!" +req.originalUrl);
 });
+
 
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

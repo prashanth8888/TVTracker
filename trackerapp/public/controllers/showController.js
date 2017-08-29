@@ -1,6 +1,6 @@
-var app = angular.module('MyApp');
+(function () {
 
-app.controller('ShowCtrl',['$scope','$rootScope','$routeParams','Detail','Subscription', 
+angular.module('MyApp').controller('ShowCtrl',['$scope','$rootScope','$routeParams','Detail','Subscription', 
 function($scope,$rootScope, $routeParams, Detail, Subscription) {
 
     $scope.seasonsData  = {};
@@ -66,3 +66,4 @@ function($scope,$rootScope, $routeParams, Detail, Subscription) {
     init();
     
   }]);
+})();

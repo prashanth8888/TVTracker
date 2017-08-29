@@ -1,7 +1,8 @@
-var app = angular.module('MyApp');
+(function () {
 
-app.service('Detail', ['$http', function($http) {
+angular.module('MyApp').service('Detail', ['$http', function($http) {
     this.displaybyShowId = function(showId){
         return $http.get('/tv/show/', {params: { showID: showId }});
     }
 }]);
+})();

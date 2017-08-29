@@ -6,14 +6,15 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "angular-mocks": "^1.6.6",
     "async": "^2.5.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "~1.17.1",
+    "compression": "^1.7.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "express-session": "^1.15.5",
-    "gulp": "^3.9.1",
     "jade": "~1.11.0",
     "mongoose": "^4.11.8",
     "morgan": "~1.8.1",
@@ -26,9 +27,11 @@
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
-    "gulp-angular-templatecache": "^2.0.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-csso": "^3.0.0",
-    "gulp-uglify": "^3.0.0"
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-htmlfile-reporter": "^0.3.5",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4"
   }
 }

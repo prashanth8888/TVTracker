@@ -1,6 +1,6 @@
-var app = angular.module('MyApp');
+(function () {
 
-app.controller('HomeCtrl',['$scope', 'Series', function($scope, Series) {
+angular.module('MyApp').controller('HomeCtrl',['$scope', 'Series', function($scope, Series) {
     
     $scope.TvSeries = [];
     $scope.dataHasLoaded = false;
@@ -46,3 +46,4 @@ app.controller('HomeCtrl',['$scope', 'Series', function($scope, Series) {
     };
     init();
   }]);
+})();
