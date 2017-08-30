@@ -1,22 +1,26 @@
+## TV Tracker App
 
-     ,-----.,--.                  ,--. ,---.   ,--.,------.  ,------.
-    '  .--./|  | ,---. ,--.,--. ,-|  || o   \  |  ||  .-.  \ |  .---'
-    |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \  :|  `--, 
-    '  '--'\|  |' '-' ''  ''  '\ `-' | .'  /   |  ||  '--'  /|  `---.
-     `-----'`--' `---'  `----'  `---'  `--'    `--'`-------' `------'
-    ----------------------------------------------------------------- 
+### Welcome to TV tracker App - Makes your show tracking Application much easier,
 
+### 2 Simple steps
 
-Welcome to your Node.js project on Cloud9 IDE!
+1) Subscribe to your fav shows.
+2) Email notification when a new season starts.
 
-This chat example showcases how to use `socket.io` with a static `express` server.
+This is a MEAN stack application that is based on Angular 1.6.
+- Tested using Karma/Jasmine.
 
-## Running the server
+### API'S used
 
-1) Open `server.js` and start the app by clicking on the "Run" button in the top menu.
+TMDB - It's a great resource for small applications but getting all data at once is difficult or 
+most of the times options won't be available.
 
-2) Alternatively you can launch the app from the Terminal:
+### RESTful Routes Details
 
-    $ node server.js
+NODE.JS Routes:
 
-Once the server is running, open the project in the shape of 'https://projectname-username.c9users.io/'. As you enter your name, watch the Users list (on the left) update. Once you press Enter or Send, the message is shared with all connected clients.
+Route	         POST	                                     GET	                             
+/tv/shows/:id	 N/A	                                     Get all shows in that genre	    
+/tv/show/:id	 N/A	                                     Get a particular show  with option to subscribe/unsubscribe	        	    
+/tv/subscribe    Subscribe to a show                         N/A
+/tv/unsubscribe  Unsubscribe to already subscribed show      N/A
