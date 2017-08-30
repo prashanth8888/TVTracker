@@ -21,6 +21,7 @@ var User           = require("./public/models/user");
 
 var TMDBKey        = "6bf903d885f2348c1ed94952f526a12d";
 var oneDay         = 86400000; //In milliseconds
+const MongoStore   = require("connect-mongo")(session);
 
 app.set('port', process.env.PORT || 3000);
 app.use(compress());
@@ -28,14 +29,18 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-app.use(session({ secret: 'With great power comes great responsibility' }));
+app.use(session({ secret: 'With great power comes great responsibility',
+                  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+                  cookie:{maxAge: 180 * 60 * 1000}
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public'), {maxAge: oneDay}));
 
 
 //Mongo Connection
-mongoose.connect("mongodb://localhost/tvappdb1");
+mongoose.connect(process.env.DATABASEURL);
 
 app.use(function(req, res, next) {
   if (req.user) {

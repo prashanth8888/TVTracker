@@ -17,14 +17,25 @@ function($scope,$rootScope, $routeParams, Detail, Subscription) {
             $scope.seasonsData = {};
             $scope.currentSeasonDBdata = {};
             $scope.episodesData.length = 0;
+            $scope.seasonToDisplayIdentified = false;
             
             for(var i = 0; i < response.data.episodesData.length; i++){
-                if(i == 0)
-                   $scope.currentSeason = i;
-                $scope.episodesData.push(response.data.episodesData[i]);
+                    try{
+                        //Sometimes we are getting invalid response from the API - Need to filter out all the invalid data.
+                        var tempdata = JSON.parse(response.data.episodesData[i]);
+                        if(!$scope.seasonToDisplayIdentified){
+                            $scope.currentSeason = i;
+                            $scope.seasonToDisplayIdentified = true;
+                        }
+                        $scope.episodesData.push(tempdata);
+                        
+                    }catch(e){
+                        continue;
+                        //Skip the episodes data
+                    }
             }
             
-            $scope.currentSeasonEpisodesData = JSON.parse($scope.episodesData[$scope.currentSeason]);
+            $scope.currentSeasonEpisodesData = $scope.episodesData[$scope.currentSeason];
             $scope.seasonsData               = JSON.parse(response.data.seasonsData);
             $scope.currentSeasonDBdata       = response.data.currentSeasonDBdata;
             
@@ -56,7 +67,7 @@ function($scope,$rootScope, $routeParams, Detail, Subscription) {
     //Switching between different seasons
     $scope.getSeason = function(seasonID){
         $scope.currentSeason = seasonID;
-        $scope.currentSeasonEpisodesData = JSON.parse($scope.episodesData[$scope.currentSeason]);
+        $scope.currentSeasonEpisodesData = $scope.episodesData[$scope.currentSeason];
     }
     
     var init = function () {
