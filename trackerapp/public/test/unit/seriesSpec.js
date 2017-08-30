@@ -14,20 +14,19 @@ describe('SeriesService', function () {
         httpBackend.verifyNoOutstandingExpectation();
         httpBackend.verifyNoOutstandingRequest();
     });
-
-    it('Get Series ServiceTestSpec', function () {
-            
-         var result;
-        myserv.displaybyGenre(10759).then(function (response) {
-            result = response.data;
-        });;
-
-
-        httpBackend.flush();
-         
-        expect(result).toEqual(1);
- 
+    
+    
+    describe('Testing the HTTP service for getting Series details', function() {
+        it('Get Series ServiceTestSpec', function () {
+                
+            var result;
+            myserv.displaybyGenre(10759).then(function (response) {
+                result = response.data;
+            });
+            httpBackend.flush();
+            expect(result).toEqual(1);
+     
+        });
     });
- 
  
 });

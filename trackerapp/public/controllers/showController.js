@@ -48,8 +48,8 @@ function($scope,$rootScope, $routeParams, Detail, Subscription) {
             
             $scope.dataHasLoaded = true;
         
-        }, function(){
-            console.log("Error while trying to build Show details page");
+        }, function(error){
+            console.log("Error while trying to build Show details page" + error);
         });
     }
     

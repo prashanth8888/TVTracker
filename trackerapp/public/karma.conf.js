@@ -4,10 +4,20 @@
 module.exports = function(config) {
   config.set({
     
-    reporters: ['progress', 'html'],
- 
+    reporters: ['progress', 'html', 'spec'],
+    
+    specReporter: {
+        maxLogLines: 5,             // limit number of lines logged per test
+        suppressErrorSummary: true, // do not print error summary
+        suppressFailed: false,      // do not print information about failed tests
+        suppressPassed: false,      // do not print information about passed tests
+        suppressSkipped: true,      // do not print information about skipped tests
+        showSpecTiming: false,      // print the time elapsed for each spec
+        failFast: true              // test would finish with error when a first fail occurs. 
+      },
+    
     htmlReporter: {
-      outputFile: 'tests/units.html',
+      outputFile: 'test/units.html',
             
       // Optional 
       pageTitle: 'Unit Tests',
@@ -16,10 +26,9 @@ module.exports = function(config) {
       useCompactStyle: true,
       useLegacyStyle: true
     },
+    
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
-
-
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
@@ -34,6 +43,7 @@ module.exports = function(config) {
       './controllers/*.js',
       './services/*.js',
       './directives/*.js',
+      './test/unit/*.js'
     ],
 
 
@@ -51,7 +61,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    // reporters: ['progress'],
 
 
     // web server port

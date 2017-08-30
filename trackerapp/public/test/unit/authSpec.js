@@ -1,7 +1,7 @@
 describe('Auth-service', function() {
   beforeEach(module('MyApp'));
 
-  describe('Auth', function() {
+  describe('Test the Authentication Service instantiation', function() {
     it('should return current version', inject(function(Auth) {
       expect(Auth).toBeDefined();
     }));
